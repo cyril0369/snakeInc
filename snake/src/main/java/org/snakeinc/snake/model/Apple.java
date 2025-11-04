@@ -6,12 +6,12 @@ import lombok.Getter;
 @Getter
 public class Apple implements GameObject {
 
-    private final Tile tile;
+    private final Cell cell;
 
     public Apple() {
         var random = new Random();
-        tile = Grid.getInstance().getTile(random.nextInt(0, Grid.TILES_X), random.nextInt(0, Grid.TILES_Y));
-        tile.gameObjectsInTile.add(this);
+        cell = Grid.getInstance().getTile(random.nextInt(0, Grid.TILES_X), random.nextInt(0, Grid.TILES_Y));
+        cell.gameObjectsInTile.add(this);
     }
 
 }

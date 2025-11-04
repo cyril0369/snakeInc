@@ -38,7 +38,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 
     private void startGame() {
         snake = new Snake();
-        Basket.getInstance().refillIfEmptyOrPartial(1);
+        Basket.getInstance().refillIfNeeded(1);
         timer = new Timer(100, this);
         timer.start();
         running = true;
@@ -48,7 +48,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
         if (running) {
-            GridComponent.getInstance().draw(g);
+            GridUI.getInstance().draw(g);
         } else {
             gameOver(g);
         }
@@ -66,7 +66,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
         if (running) {
             try {
                 snake.move(direction);
-                Basket.getInstance().refillIfEmptyOrPartial(1);
+                Basket.getInstance().refillIfNeeded(1);
             } catch (OutOfPlayException | SelfCollisionException exception) {
                 timer.stop();
                 running = false;

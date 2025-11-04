@@ -27,7 +27,7 @@ public class Basket {
     }
 
     public void removeApple(Apple apple) {
-        apple.getTile().gameObjectsInTile.remove(apple);
+        apple.getCell().gameObjectsInTile.remove(apple);
         apples.remove(apple);
     }
 
@@ -35,13 +35,13 @@ public class Basket {
         return apples.isEmpty();
     }
 
-    public void refill(int nApples) {
+    private void refill(int nApples) {
         for (int i = 0; i < nApples; i++) {
             addApple();
         }
     }
 
-    public void refillIfEmptyOrPartial(int nApples) {
+    public void refillIfNeeded(int nApples) {
         int missingApple = nApples - apples.size();
         if (missingApple > 0) {
             refill(missingApple);

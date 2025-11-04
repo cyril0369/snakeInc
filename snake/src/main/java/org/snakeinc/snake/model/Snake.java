@@ -6,26 +6,26 @@ import org.snakeinc.snake.exception.SelfCollisionException;
 
 public class Snake implements GameObject {
 
-    private final ArrayList<Tile> body;
+    private final ArrayList<Cell> body;
 
     public Snake() {
         body = new ArrayList<>();
-        Tile head = Grid.getInstance().getTile(5, 5);
+        Cell head = Grid.getInstance().getTile(5, 5);
         body.add(head);
         head.getGameObjectsInTile().add(this);
     }
 
-    public ArrayList<Tile> getBody() {
+    public ArrayList<Cell> getBody() {
         return body;
     }
 
-    public Tile getHead() {
+    public Cell getHead() {
         return body.getFirst();
     }
 
     public void eat(Apple apple) {
-        body.addFirst(apple.getTile());
-        apple.getTile().getGameObjectsInTile().add(this);
+        body.addFirst(apple.getCell());
+        apple.getCell().getGameObjectsInTile().add(this);
         Basket.getInstance().removeApple(apple);
     }
 
@@ -46,7 +46,7 @@ public class Snake implements GameObject {
                 x++;
                 break;
         }
-        Tile newHead = Grid.getInstance().getTile(x, y);
+        Cell newHead = Grid.getInstance().getTile(x, y);
         if (newHead == null) {
             throw new OutOfPlayException();
         }

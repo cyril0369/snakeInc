@@ -9,7 +9,7 @@ import lombok.Getter;
 
 @Data
 @EqualsAndHashCode
-public class Tile {
+public class Cell {
 
     @Getter
     private int x;
@@ -19,7 +19,7 @@ public class Tile {
 
     List<GameObject> gameObjectsInTile = new ArrayList<>();
 
-    public Tile(int x, int y) {
+    public Cell(int x, int y) {
         setX(x);
         setY(y);
     }

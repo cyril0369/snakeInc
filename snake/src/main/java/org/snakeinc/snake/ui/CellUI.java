@@ -8,12 +8,12 @@ import lombok.AllArgsConstructor;
 import org.snakeinc.snake.model.Apple;
 import org.snakeinc.snake.model.GameObject;
 import org.snakeinc.snake.model.Snake;
-import org.snakeinc.snake.model.Tile;
+import org.snakeinc.snake.model.Cell;
 
 @AllArgsConstructor
-public class TileComponent implements Drawable {
+public class CellUI implements Drawable {
 
-    private Tile tile;
+    private Cell cell;
     private int upperPixelX;
     private int upperPixelY;
 
@@ -32,7 +32,7 @@ public class TileComponent implements Drawable {
 
     @Override
     public void draw(Graphics g) {
-        for (GameObject object : tile.getGameObjectsInTile()) {
+        for (GameObject object : cell.getGameObjectsInTile()) {
             if (object instanceof Apple) {
                 g.setColor(Color.RED);
                 drawOval(g);
