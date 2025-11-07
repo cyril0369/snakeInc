@@ -15,7 +15,6 @@ import org.snakeinc.snake.GameParams;
 import org.snakeinc.snake.exception.OutOfPlayException;
 import org.snakeinc.snake.exception.SelfCollisionException;
 import org.snakeinc.snake.model.Basket;
-import org.snakeinc.snake.model.Grid;
 import org.snakeinc.snake.model.Snake;
 
 public class GamePanel extends JPanel implements ActionListener, KeyListener {
