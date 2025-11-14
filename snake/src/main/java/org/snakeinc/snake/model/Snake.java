@@ -16,8 +16,8 @@ public class Snake {
         this.onAppleEatenListener = listener;
         this.grid = grid;
         Cell head = grid.getTile(GameParams.SNAKE_DEFAULT_X, GameParams.SNAKE_DEFAULT_Y);
-        body.add(head);
         head.addSnake(this);
+        body.add(head);
     }
 
     public int getSize() {
@@ -28,10 +28,10 @@ public class Snake {
         return body.getFirst();
     }
 
-    public void eat(Apple apple) {
-        body.addFirst(apple.getCell());
-        apple.getCell().addSnake(this);
-        onAppleEatenListener.onAppleEaten(apple);
+    public void eat(Apple apple, Cell cell) {
+        body.addFirst(cell);
+        cell.addSnake(this);
+        onAppleEatenListener.onAppleEaten(apple, cell);
     }
 
     public void move(char direction) throws OutOfPlayException, SelfCollisionException {
@@ -61,7 +61,7 @@ public class Snake {
 
         // Eat apple :
         if (newHead.containsAnApple()) {
-            this.eat(newHead.getApple());
+            this.eat(newHead.getApple(), newHead);
             return;
         }
 
@@ -71,7 +71,6 @@ public class Snake {
 
         body.getLast().removeSnake();
         body.removeLast();
-
 
     }
 

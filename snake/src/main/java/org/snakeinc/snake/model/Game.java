@@ -15,7 +15,7 @@ public class Game {
         grid = new Grid();
         basket = new Basket(grid);
         basket.refillIfNeeded(1);
-        snake = new Snake(apple -> basket.removeApple(apple), grid);
+        snake = new Snake((apple, cell) -> basket.removeAppleInCell(apple,cell), grid);
     }
 
     public void iterate(char direction) throws OutOfPlayException, SelfCollisionException {

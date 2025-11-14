@@ -26,8 +26,8 @@ public class Basket {
         apples.add(apple);
     }
 
-    public void removeApple(Apple apple) {
-        apple.getCell().removeApple();
+    public void removeAppleInCell(Apple apple, Cell cell) {
+        cell.removeApple();
         apples.remove(apple);
     }
 
