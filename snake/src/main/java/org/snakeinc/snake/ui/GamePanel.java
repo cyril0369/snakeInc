@@ -15,7 +15,6 @@ import org.snakeinc.snake.GameParams;
 import org.snakeinc.snake.exception.OutOfPlayException;
 import org.snakeinc.snake.exception.SelfCollisionException;
 import org.snakeinc.snake.model.Game;
-import org.snakeinc.snake.model.Snake;
 
 public class GamePanel extends JPanel implements ActionListener, KeyListener {
 
@@ -24,7 +23,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
     public static final int GAME_PIXEL_HEIGHT = TILE_PIXEL_SIZE * GameParams.TILES_Y;
 
     private Timer timer;
-    private Snake snake;
+    private Game game;
     private boolean running = false;
     private char direction = 'R';
 
@@ -37,8 +36,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
     }
 
     private void startGame() {
-        snake = new Snake();
-        Game.getCurrentGame().getBasket().refillIfNeeded(1);
+        game = new Game();
         timer = new Timer(100, this);
         timer.start();
         running = true;
@@ -48,7 +46,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
         if (running) {
-            GridUI.getInstance().draw(g);
+            UIUtils.draw(g, game);
         } else {
             gameOver(g);
         }
@@ -65,8 +63,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
     public void actionPerformed(ActionEvent e) {
         if (running) {
             try {
-                snake.move(direction);
-                Game.getCurrentGame().getBasket().refillIfNeeded(1);
+                game.iterate(direction);
             } catch (OutOfPlayException | SelfCollisionException exception) {
                 timer.stop();
                 running = false;

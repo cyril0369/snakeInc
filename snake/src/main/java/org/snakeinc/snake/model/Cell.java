@@ -42,8 +42,7 @@ public class Cell {
     public boolean containsASnake() {
         return this.snake != null;
     }
-
-
+    
     public boolean containsAnApple() {
         return this.apple != null;
     }

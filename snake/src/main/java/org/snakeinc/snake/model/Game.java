@@ -1,25 +1,26 @@
 package org.snakeinc.snake.model;
 
 import lombok.Getter;
+import org.snakeinc.snake.exception.OutOfPlayException;
+import org.snakeinc.snake.exception.SelfCollisionException;
 
 @Getter
 public class Game {
 
     private final Grid grid;
     private final Basket basket;
+    private final Snake snake;
 
-    private static Game instance;
-
-    public static Game getCurrentGame() {
-        if (instance == null) {
-            instance = new Game();
-        }
-        return instance;
+    public Game() {
+        grid = new Grid();
+        basket = new Basket(grid);
+        basket.refillIfNeeded(1);
+        snake = new Snake((apple, cell) -> basket.removeAppleInCell(apple,cell), grid);
     }
 
-    private Game() {
-        grid = new Grid();
-        basket = new Basket();
+    public void iterate(char direction) throws OutOfPlayException, SelfCollisionException {
+        snake.move(direction);
+        basket.refillIfNeeded(1);
     }
 
 

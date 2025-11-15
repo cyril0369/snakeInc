@@ -5,25 +5,23 @@ import org.junit.jupiter.api.Test;
 import org.snakeinc.snake.exception.OutOfPlayException;
 import org.snakeinc.snake.exception.SelfCollisionException;
 import org.snakeinc.snake.model.Game;
-import org.snakeinc.snake.model.Snake;
 
 public class SnakeTest {
 
+    Game game = new Game();
 
     @Test
     public void snakeEatApplesAfterMove_ReturnsCorrectBodySize() throws OutOfPlayException, SelfCollisionException {
-        Snake snake = new Snake();
-        Game.getCurrentGame().getBasket().addApple(Game.getCurrentGame().getGrid().getTile(5, 4));
-        snake.move('U');
-        Assertions.assertEquals(2, snake.getSize());
+        game.getBasket().addApple(game.getGrid().getTile(5, 4));
+        game.getSnake().move('U');
+        Assertions.assertEquals(2, game.getSnake().getSize());
     }
 
     @Test
     void snakeMovesUp_ReturnCorrectHead() throws OutOfPlayException, SelfCollisionException {
-        Snake snake = new Snake();
-        snake.move('U');
-        Assertions.assertEquals(5, snake.getHead().getX());
-        Assertions.assertEquals(5, snake.getHead().getY());
+        game.getSnake().move('U');
+        Assertions.assertEquals(5, game.getSnake().getHead().getX());
+        Assertions.assertEquals(4, game.getSnake().getHead().getY());
     }
 
 }
