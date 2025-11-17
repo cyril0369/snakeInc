@@ -2,20 +2,27 @@ package org.snakeinc.snake.model;
 
 import java.util.ArrayList;
 import org.snakeinc.snake.GameParams;
+import org.snakeinc.snake.exception.MalnutritionExeption;
 import org.snakeinc.snake.exception.OutOfPlayException;
 import org.snakeinc.snake.exception.SelfCollisionException;
 
-public class Snake {
+public abstract sealed class Snake permits Anaconda, Python, BoaConstrictor {
 
-    private final ArrayList<Cell> body;
-    private final AppleEatenListener onAppleEatenListener;
-    private final Grid grid;
+    protected final ArrayList<Cell> body;
+    protected final AppleEatenListener onAppleEatenListener;
+    protected final Grid grid;
 
     public Snake(AppleEatenListener listener, Grid grid) {
         this.body = new ArrayList<>();
         this.onAppleEatenListener = listener;
         this.grid = grid;
         Cell head = grid.getTile(GameParams.SNAKE_DEFAULT_X, GameParams.SNAKE_DEFAULT_Y);
+        head.addSnake(this);
+        body.add(head);
+        head = grid.getTile(GameParams.SNAKE_DEFAULT_X, GameParams.SNAKE_DEFAULT_Y - 1);
+        head.addSnake(this);
+        body.add(head);
+        head = grid.getTile(GameParams.SNAKE_DEFAULT_X, GameParams.SNAKE_DEFAULT_Y - 2);
         head.addSnake(this);
         body.add(head);
     }
@@ -28,17 +35,13 @@ public class Snake {
         return body.getFirst();
     }
 
-    public void eat(Apple apple, Cell cell) {
-        body.addFirst(cell);
-        cell.addSnake(this);
-        onAppleEatenListener.onAppleEaten(apple, cell);
-    }
+    public abstract void eat(Apple apple, Cell cell) throws MalnutritionExeption;
 
     public enum Direction {
         UP, DOWN, LEFT, RIGHT
     }
 
-    public void move(Direction direction) throws OutOfPlayException, SelfCollisionException {
+    public void move(Direction direction) throws OutOfPlayException, SelfCollisionException, MalnutritionExeption {
         int x = getHead().getX();
         int y = getHead().getY();
         switch (direction) {
