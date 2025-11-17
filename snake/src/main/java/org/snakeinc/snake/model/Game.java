@@ -14,11 +14,11 @@ public class Game {
     public Game() {
         grid = new Grid();
         basket = new Basket(grid);
-        basket.refillIfNeeded(3);
+        basket.refillIfNeeded(1);
         snake = new Snake((apple, cell) -> basket.removeAppleInCell(apple,cell), grid);
     }
 
-    public void iterate(char direction) throws OutOfPlayException, SelfCollisionException {
+    public void iterate(Snake.Direction direction) throws OutOfPlayException, SelfCollisionException {
         snake.move(direction);
         basket.refillIfNeeded(1);
     }
