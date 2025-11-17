@@ -1,0 +1,52 @@
+Java fundamentals and OO concepts.
+
+1) Class, object, primitive types :
+Les objets sont créés dans les fichiers du dossier Model sous forme de Class.
+Par exemple, l'objet Snake est créé avec (public class Snake {})
+Les primitive types sont les variables stockées en mémoire. Par exemple, la variable x de type int (int x = ...;).
+
+2) Encapsulation, properties, getter and setter, final :
+Une class contient des données et des méthodes encapsulées dans un même objet.
+Les properties sont les attributs d'une class, le getter est une méthode pour lire ces attributs.
+Le setter permet de les modifier.
+Un attribut final ne peut plus être modifié après la création de l'objet, par exemple l'attribut Grid de l'objet Game.
+
+3) Instantiation of Objects, Constructors :
+Dans la class Game, la méthode Game() est le Constructor. Elle permet de créer un objet Game.
+
+4) Static fields, static methods. What are the particularity of "static" ?
+Une méthode ou une variable static est accessible sans instance de l'objet.
+Par exemple, la variable GamePanel.TILE_PIXEL_SIZE est accessible sans créer l'objet GamePanel.
+
+5) Composition :
+public class GamePanel extends JPanel / ici, la classe GamePanel est un héritage de la classe JPanel.
+La composition permet d'étendre les fonctionnalités d'une classe sans la modifier.
+
+6) inheritance, interface, polymorphism :
+Les héritages permettent de créer des objets polymorphes, car ils héritent de la classe mère.
+Une interface permet de traiter des objets polymorphes sans créer une classe mère.
+
+7) Static VS dynamic types :
+Le type statique est celui donné à la déclaration de la variable.
+Le type dynamique est celui de la valeur de la variable.
+
+8) Separation of concerns (design principle) :
+Ici, le dossier Model et le dossier UI séparent l'interface graphique du code du jeu.
+Cela permet une maintenance plus facile du code.
+
+9) collections :
+Les collections sont des objets qui organisent d'autres objets (liste, tableau, ...).
+Par exemple, l'objet Grid est une collection composée d'objets Cell.
+
+10) Exceptions :
+Les exceptions sont une méthode de gestion des erreurs dans une méthode.
+Par exemple, avec le try catch dans la méthode (public void actionPerformed(ActionEvent e)).
+
+11) Functional interfaces / Lambda :
+
+12) Lombok :
+C'est une bibliothèque Java qui permet d'automatiser l'écriture des méthodes.
+d'une classe (getter, setter, constructeur, ...).
+
+
+
