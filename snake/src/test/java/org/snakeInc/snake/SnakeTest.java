@@ -21,7 +21,34 @@ public class SnakeTest {
     void snakeMovesUp_ReturnCorrectHead() throws OutOfPlayException, SelfCollisionException {
         game.getSnake().move('U');
         Assertions.assertEquals(5, game.getSnake().getHead().getX());
-        Assertions.assertEquals(5, game.getSnake().getHead().getY());
+        Assertions.assertEquals(4, game.getSnake().getHead().getY());
     }
 
+    @Test
+    void snakeOutOfPlayBehavior() throws OutOfPlayException, SelfCollisionException {
+        while (game.getSnake().getHead().getY() != 0) {
+            game.getSnake().move('U');
+        }
+        Assertions.assertThrows(OutOfPlayException.class, () -> {
+            game.getSnake().move('U');
+        });
+    }
+
+    @Test
+    void snakeSelfCollisionBehavior()  throws OutOfPlayException, SelfCollisionException {
+        game.getBasket().addApple(game.getGrid().getTile(5, 4));
+        game.getSnake().move('U');
+        game.getBasket().addApple(game.getGrid().getTile(5, 3));
+        game.getSnake().move('U');
+        game.getBasket().addApple(game.getGrid().getTile(5, 2));
+        game.getSnake().move('U');
+        game.getBasket().addApple(game.getGrid().getTile(5, 1));
+        game.getSnake().move('R');
+        game.getSnake().move('D');
+
+        Assertions.assertThrows(SelfCollisionException.class, () -> {
+            game.getSnake().move('L');
+        });
+
+    }
 }

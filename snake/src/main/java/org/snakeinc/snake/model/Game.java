@@ -14,7 +14,7 @@ public class Game {
     public Game() {
         grid = new Grid();
         basket = new Basket(grid);
-        basket.refillIfNeeded(1);
+        basket.refillIfNeeded(3);
         snake = new Snake((apple, cell) -> basket.removeAppleInCell(apple,cell), grid);
     }
 
