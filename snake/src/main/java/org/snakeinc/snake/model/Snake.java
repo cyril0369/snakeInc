@@ -9,12 +9,12 @@ import org.snakeinc.snake.exception.SelfCollisionException;
 public abstract sealed class Snake permits Anaconda, Python, BoaConstrictor {
 
     protected final ArrayList<Cell> body;
-    protected final AppleEatenListener onAppleEatenListener;
+    protected final FruitEatenListener onFruitEatenListener;
     protected final Grid grid;
 
-    public Snake(AppleEatenListener listener, Grid grid) {
+    public Snake(FruitEatenListener listener, Grid grid) {
         this.body = new ArrayList<>();
-        this.onAppleEatenListener = listener;
+        this.onFruitEatenListener = listener;
         this.grid = grid;
         Cell head = grid.getTile(GameParams.SNAKE_DEFAULT_X, GameParams.SNAKE_DEFAULT_Y);
         head.addSnake(this);
@@ -35,7 +35,7 @@ public abstract sealed class Snake permits Anaconda, Python, BoaConstrictor {
         return body.getFirst();
     }
 
-    public abstract void eat(Apple apple, Cell cell) throws MalnutritionExeption;
+    public abstract void eat(Fruit fruit, Cell cell) throws MalnutritionExeption;
 
     public enum Direction {
         UP, DOWN, LEFT, RIGHT
@@ -67,8 +67,8 @@ public abstract sealed class Snake permits Anaconda, Python, BoaConstrictor {
         }
 
         // Eat apple :
-        if (newHead.containsAnApple()) {
-            this.eat(newHead.getApple(), newHead);
+        if (newHead.containsAnFruit()) {
+            this.eat(newHead.getFruit(), newHead);
             return;
         }
 

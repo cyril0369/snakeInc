@@ -10,10 +10,10 @@ import org.snakeinc.snake.GameParams;
 public class Basket {
 
     private Grid grid;
-    private List<Apple> apples;
+    private List<Fruit> fruits;
 
     public Basket(Grid grid) {
-        apples = new ArrayList<>();
+        fruits = new ArrayList<>();
         this.grid = grid;
     }
 
@@ -28,17 +28,25 @@ public class Basket {
             }
             cell = grid.getTile(randX,randY);
         }
-        Apple apple = AppleFactory.createAppleInCell(cell);
-        apples.add(apple);
+        var random = new Random();
+        int randI = random.nextInt(0, 3);
+        if (randI >= 3) {
+            Apple apple = AppleFactory.createAppleInCell(cell);
+            fruits.add(apple);
+        }
+        else {
+            Brocoli brocoli = BrocoliFactory.createBrocoliInCell(cell);
+            fruits.add(brocoli);
+        }
     }
 
-    public void removeAppleInCell(Apple apple, Cell cell) {
-        cell.removeApple();
-        apples.remove(apple);
+    public void removeFruitInCell(Fruit fruit, Cell cell) {
+        cell.removeFruit();
+        fruits.remove(fruit);
     }
 
     public boolean isEmpty() {
-        return apples.isEmpty();
+        return fruits.isEmpty();
     }
 
     private void refill(int nApples) {
@@ -48,7 +56,7 @@ public class Basket {
     }
 
     public void refillIfNeeded(int nApples) {
-        int missingApple = nApples - apples.size();
+        int missingApple = nApples - fruits.size();
         if (missingApple > 0) {
             refill(missingApple);
         }

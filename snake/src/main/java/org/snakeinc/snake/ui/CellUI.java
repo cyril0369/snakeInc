@@ -5,10 +5,7 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import lombok.AllArgsConstructor;
-import org.snakeinc.snake.model.Anaconda;
-import org.snakeinc.snake.model.BoaConstrictor;
-import org.snakeinc.snake.model.Cell;
-import org.snakeinc.snake.model.Python;
+import org.snakeinc.snake.model.*;
 
 @AllArgsConstructor
 public class CellUI {
@@ -31,9 +28,17 @@ public class CellUI {
 
     public void draw(Graphics g) {
 
-        if (cell.containsAnApple()) {
-            g.setColor(Color.RED);
-            drawOval(g);
+        if (cell.containsAnFruit()) {
+            switch (cell.getFruit()) {
+                case Apple apple -> {
+                    g.setColor(Color.RED);
+                    drawOval(g);
+                }
+                case Brocoli brocoli -> {
+                    g.setColor(Color.GREEN);
+                    drawOval(g);
+                }
+            }
         }
         if (cell.containsASnake()) {
             switch (cell.getSnake()) {
@@ -46,7 +51,7 @@ public class CellUI {
                     drawRectangle(g);
                 }
                 case BoaConstrictor boaConstrictor -> {
-                    g.setColor(Color.RED);
+                    g.setColor(Color.BLUE);
                     drawRectangle(g);
                 }
 

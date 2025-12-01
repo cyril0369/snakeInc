@@ -19,17 +19,18 @@ public class Game {
         basket = new Basket(grid);
         basket.refillIfNeeded(1);
         var random = new Random();
-        int randint = random.nextInt(3);
+        int randint = 2;
+        // int randint = random.nextInt(3);
         switch(randint) {
             case 1: {
-                snake = new Anaconda((apple, cell) -> basket.removeAppleInCell(apple,cell), grid);
+                snake = new Anaconda((apple, cell) -> basket.removeFruitInCell(apple,cell), grid);
                 break;
             }
             case 2 : {
-                snake = new Python((apple, cell) -> basket.removeAppleInCell(apple,cell), grid);
+                snake = new Python((apple, cell) -> basket.removeFruitInCell(apple,cell), grid);
                 break;
             }
-            default: snake = new BoaConstrictor((apple, cell) -> basket.removeAppleInCell(apple,cell), grid);
+            default: snake = new BoaConstrictor((apple, cell) -> basket.removeFruitInCell(apple,cell), grid);
         }
     }
 
