@@ -41,8 +41,14 @@ public class CellUI {
                     }
                 }
                 case Brocoli brocoli -> {
-                    g.setColor(Color.GREEN);
-                    drawOval(g);
+                    if (brocoli.isSteamed()){
+                        g.setColor(Color.GREEN.darker().darker());
+                        drawOval(g);
+                    }
+                    else {
+                        g.setColor(Color.GREEN);
+                        drawOval(g);
+                    }
                 }
             }
         }
