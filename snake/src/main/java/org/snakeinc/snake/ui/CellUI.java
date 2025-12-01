@@ -31,8 +31,14 @@ public class CellUI {
         if (cell.containsAnFruit()) {
             switch (cell.getFruit()) {
                 case Apple apple -> {
-                    g.setColor(Color.RED);
-                    drawOval(g);
+                    if (apple.isPoisoned()){
+                        g.setColor(Color.MAGENTA);
+                        drawOval(g);
+                    }
+                    else {
+                        g.setColor(Color.RED);
+                        drawOval(g);
+                    }
                 }
                 case Brocoli brocoli -> {
                     g.setColor(Color.GREEN);

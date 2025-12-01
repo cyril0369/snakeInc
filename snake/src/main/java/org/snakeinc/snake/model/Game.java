@@ -19,7 +19,7 @@ public class Game {
         basket = new Basket(grid);
         basket.refillIfNeeded(1);
         var random = new Random();
-        int randint = 2;
+        int randint = 1;
         // int randint = random.nextInt(3);
         switch(randint) {
             case 1: {
