@@ -4,8 +4,8 @@ import org.snakeinc.snake.exception.MalnutritionExeption;
 
 public final class Python extends Snake {
 
-    public Python(FruitEatenListener listener, Grid grid) {
-        super(listener, grid);
+    public Python(FruitEatenListener listener, Grid grid, Score score) {
+        super(listener, grid, score);
     }
 
     public void eat(Fruit fruit, Cell cell) throws MalnutritionExeption {

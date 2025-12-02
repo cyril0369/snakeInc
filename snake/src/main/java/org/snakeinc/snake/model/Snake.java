@@ -11,11 +11,13 @@ public abstract sealed class Snake permits Anaconda, Python, BoaConstrictor {
     protected final ArrayList<Cell> body;
     protected final FruitEatenListener onFruitEatenListener;
     protected final Grid grid;
+    protected final Score score;
 
-    public Snake(FruitEatenListener listener, Grid grid) {
+    public Snake(FruitEatenListener listener, Grid grid, Score score) {
         this.body = new ArrayList<>();
         this.onFruitEatenListener = listener;
         this.grid = grid;
+        this.score = score;
         Cell head = grid.getTile(GameParams.SNAKE_DEFAULT_X, GameParams.SNAKE_DEFAULT_Y);
         head.addSnake(this);
         body.add(head);
@@ -58,6 +60,7 @@ public abstract sealed class Snake permits Anaconda, Python, BoaConstrictor {
                 x++;
                 break;
         }
+        score.add_number_of_moves();
         Cell newHead = grid.getTile(x, y);
         if (newHead == null) {
             throw new OutOfPlayException();
@@ -69,6 +72,7 @@ public abstract sealed class Snake permits Anaconda, Python, BoaConstrictor {
         // Eat apple :
         if (newHead.containsAnFruit()) {
             this.eat(newHead.getFruit(), newHead);
+            score.add_food_items_eaten();
             return;
         }
 

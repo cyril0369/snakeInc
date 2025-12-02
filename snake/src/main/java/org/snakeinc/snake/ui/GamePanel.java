@@ -58,9 +58,29 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
     private void gameOver(Graphics g) {
         g.setColor(Color.RED);
         g.setFont(new Font("Arial", Font.BOLD, 20));
+
         FontMetrics metrics = getFontMetrics(g.getFont());
-        g.drawString("Game Over", (GAME_PIXEL_WIDTH - metrics.stringWidth("Game Over")) / 2, GAME_PIXEL_HEIGHT / 2);
+
+        String gameOverText = "Game Over";
+        String foodText = "Food items eaten : " + game.getScore().getFood_items_eaten();
+        String movesText = "Number of moves : " + game.getScore().getNumber_of_moves();
+        String pointsText = "Points : " + game.getScore().getPoints();
+
+        int y = GAME_PIXEL_HEIGHT / 2;
+        int x = (GAME_PIXEL_WIDTH - metrics.stringWidth(gameOverText)) / 2;
+
+        g.drawString(gameOverText, x, y);
+
+        y += metrics.getHeight() + 10;
+        g.drawString(foodText, (GAME_PIXEL_WIDTH - metrics.stringWidth(foodText)) / 2, y);
+
+        y += metrics.getHeight() + 5;
+        g.drawString(movesText, (GAME_PIXEL_WIDTH - metrics.stringWidth(movesText)) / 2, y);
+
+        y += metrics.getHeight() + 5;
+        g.drawString(pointsText, (GAME_PIXEL_WIDTH - metrics.stringWidth(pointsText)) / 2, y);
     }
+
 
     @Override
     public void actionPerformed(ActionEvent e) {

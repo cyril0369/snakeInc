@@ -4,18 +4,24 @@ import org.snakeinc.snake.exception.MalnutritionExeption;
 
 public final class Anaconda extends Snake {
 
-    public Anaconda(FruitEatenListener listener, Grid grid) {
-        super(listener, grid);
+    public Anaconda(FruitEatenListener listener, Grid grid, Score score) {
+        super(listener, grid, score);
     }
 
     public void eat(Fruit fruit, Cell cell) throws MalnutritionExeption {
         switch (fruit) {
             case Apple apple -> {
+                if (!apple.isPoisoned()) {
+                    score.add_point(2);
+                }
                 body.addFirst(cell);
                 cell.addSnake(this);
                 onFruitEatenListener.onFruitEaten(apple, cell);
             }
             case Brocoli brocoli -> {
+                if (!brocoli.isSteamed()) {
+                    score.add_point(1);
+                }
                 onFruitEatenListener.onFruitEaten(brocoli, cell);
                 int x = body.getLast().getX();
                 int y = body.getLast().getY();

@@ -13,24 +13,26 @@ public class Game {
     private final Grid grid;
     private final Basket basket;
     private final Snake snake;
+    private final Score score;
 
     public Game() {
         grid = new Grid();
         basket = new Basket(grid);
         basket.refillIfNeeded(1);
+        score = new Score();
         var random = new Random();
-        int randint = 1;
-        // int randint = random.nextInt(3);
+        // int randint = 1;
+        int randint = random.nextInt(3);
         switch(randint) {
             case 1: {
-                snake = new Anaconda((apple, cell) -> basket.removeFruitInCell(apple,cell), grid);
+                snake = new Anaconda((apple, cell) -> basket.removeFruitInCell(apple,cell), grid, score);
                 break;
             }
             case 2 : {
-                snake = new Python((apple, cell) -> basket.removeFruitInCell(apple,cell), grid);
+                snake = new Python((apple, cell) -> basket.removeFruitInCell(apple,cell), grid, score);
                 break;
             }
-            default: snake = new BoaConstrictor((apple, cell) -> basket.removeFruitInCell(apple,cell), grid);
+            default: snake = new BoaConstrictor((apple, cell) -> basket.removeFruitInCell(apple,cell), grid, score);
         }
     }
 
