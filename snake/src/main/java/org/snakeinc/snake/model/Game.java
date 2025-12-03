@@ -6,7 +6,7 @@ import org.snakeinc.snake.exception.OutOfPlayException;
 import org.snakeinc.snake.exception.SelfCollisionException;
 
 import java.util.Random;
-
+//test
 @Getter
 public class Game {
 
