@@ -37,7 +37,12 @@ public class Game {
     }
 
     public void iterate(Snake.Direction direction) throws OutOfPlayException, SelfCollisionException, MalnutritionExeption {
-        snake.move(direction);
+        switch (direction) {
+            case UP -> snake.state.moveUp(snake);
+            case DOWN -> snake.state.moveDown(snake);
+            case LEFT -> snake.state.moveLeft(snake);
+            default -> snake.state.moveRight(snake);
+        }
         basket.refillIfNeeded(1);
     }
 

@@ -11,6 +11,9 @@ public final class BoaConstrictor extends Snake{
     public void eat(Fruit fruit, Cell cell) throws MalnutritionExeption {
         switch (fruit) {
             case Apple apple -> {
+                if (apple.isPoisoned()) {
+                    this.state.eatPoisonedApple(this);
+                }
                 onFruitEatenListener.onFruitEaten(apple, cell);
                 int x = body.getLast().getX();
                 int y = body.getLast().getY();
@@ -21,6 +24,7 @@ public final class BoaConstrictor extends Snake{
                 }
             }
             case Brocoli brocoli -> {
+                this.state.eatBroccoli(this);
                 onFruitEatenListener.onFruitEaten(brocoli, cell);
             }
         }

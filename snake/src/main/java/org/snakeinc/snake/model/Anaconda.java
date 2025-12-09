@@ -13,12 +13,14 @@ public final class Anaconda extends Snake {
             case Apple apple -> {
                 if (!apple.isPoisoned()) {
                     score.add_point(2);
+                    this.state.eatPoisonedApple(this);
                 }
                 body.addFirst(cell);
                 cell.addSnake(this);
                 onFruitEatenListener.onFruitEaten(apple, cell);
             }
             case Brocoli brocoli -> {
+                this.state.eatBroccoli(this);
                 if (!brocoli.isSteamed()) {
                     score.add_point(1);
                 }

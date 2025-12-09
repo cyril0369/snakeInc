@@ -1,6 +1,8 @@
 package org.snakeinc.snake.model;
 
 import java.util.ArrayList;
+
+import lombok.Setter;
 import org.snakeinc.snake.GameParams;
 import org.snakeinc.snake.exception.MalnutritionExeption;
 import org.snakeinc.snake.exception.OutOfPlayException;
@@ -12,12 +14,15 @@ public abstract sealed class Snake permits Anaconda, Python, BoaConstrictor {
     protected final FruitEatenListener onFruitEatenListener;
     protected final Grid grid;
     protected final Score score;
+    @Setter
+    protected HealthsStates state;
 
     public Snake(FruitEatenListener listener, Grid grid, Score score) {
         this.body = new ArrayList<>();
         this.onFruitEatenListener = listener;
         this.grid = grid;
         this.score = score;
+        this.state = new GoodHealth();
         Cell head = grid.getTile(GameParams.SNAKE_DEFAULT_X, GameParams.SNAKE_DEFAULT_Y);
         head.addSnake(this);
         body.add(head);
