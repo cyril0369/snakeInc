@@ -1,6 +1,7 @@
 package org.snakeinc.snake.controller;
 
 import jakarta.validation.Valid;
+import org.snakeinc.snake.dto.PlayerResponse;
 import org.snakeinc.snake.exceptions.PlayerNotFoundException;
 import org.snakeinc.snake.service.PlayerService;
 import org.springframework.web.bind.annotation.*;
@@ -23,7 +24,6 @@ public class PlayersController {
         this.playerService = playerService;
     }
 
-    public record PlayerResponse(Long id, String name, Integer age, String category, String createdAt) {}
 
     public record BodyParam(
             @NotNull(message = "Le nom ne peut pas être null") String name,

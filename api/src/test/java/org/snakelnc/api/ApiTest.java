@@ -7,6 +7,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.snakeinc.snake.controller.PlayersController;
+import org.snakeinc.snake.dto.PlayerResponse;
 import org.snakeinc.snake.service.PlayerService;
 
 public class ApiTest {
@@ -22,7 +23,8 @@ public class ApiTest {
     @Test
     public void playerOlderThanEighteenAreSeniors(){
         PlayersController.BodyParam bodyParam = new PlayersController.BodyParam("cyril",20);
-        PlayersController.PlayerResponse playerResponse = playerService.create(bodyParam);
+        PlayerResponse playerResponse = playerService.create(bodyParam);
         Assertions.assertEquals(playerResponse.category(),"SENIOR");
     }
 }
+
