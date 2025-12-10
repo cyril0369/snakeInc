@@ -1,5 +1,7 @@
 package org.snakeinc.snake.controller;
 
+import jakarta.validation.Valid;
+import org.snakeinc.snake.exceptions.PlayerNotFoundException;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
@@ -7,30 +9,27 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicLong;
 
-import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.ResponseStatus;
-
-@ResponseStatus(HttpStatus.I_AM_A_TEAPOT)
-class PlayerNotFoundException extends RuntimeException {
-    public PlayerNotFoundException(Long id) {
-        super("Player with id " + id + " not found");
-    }
-}
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotNull;
 
 @RestController
 @RequestMapping("api/v1/players")
 public class PlayersController {
 
     private final AtomicLong idCounter = new AtomicLong(1);
+
     private record PlayerResponse(Long id, String name, Integer age, String category, String createdAt) {}
-    private record BodyParam(String name, Integer age) {}
+
+    private record BodyParam(
+            @NotNull(message = "Le nom ne peut pas être null") String name,
+            @Min(value = 14, message = "L'âge doit être supérieur à 13") Integer age) {}
+
     private final Map<Long, PlayerResponse> players = new HashMap<>();
 
     @PostMapping
-    public PlayerResponse createPlayer(@RequestBody BodyParam body){
+    public PlayerResponse createPlayer(@Valid @RequestBody BodyParam body){
 
         String category = body.age() > 18 ? "SENIOR" : "JUNIOR";
-
 
         String createdAt = LocalDate.now().toString();
         long id = idCounter.getAndIncrement();
@@ -49,5 +48,4 @@ public class PlayersController {
     }
 
 }
-//test
 
