@@ -1,17 +1,13 @@
 package org.snakeinc.snake.ui;
 
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Font;
-import java.awt.FontMetrics;
-import java.awt.Graphics;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import javax.management.monitor.MonitorSettingException;
-import javax.swing.JPanel;
-import javax.swing.Timer;
+import javax.swing.*;
+
 import org.snakeinc.snake.GameParams;
 import org.snakeinc.snake.exception.MalnutritionExeption;
 import org.snakeinc.snake.exception.OutOfPlayException;
@@ -24,6 +20,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
     public static final int TILE_PIXEL_SIZE = 20;
     public static final int GAME_PIXEL_WIDTH = TILE_PIXEL_SIZE * GameParams.TILES_X;
     public static final int GAME_PIXEL_HEIGHT = TILE_PIXEL_SIZE * GameParams.TILES_Y;
+    private final StatusBar statusBar = new StatusBar();
 
     private Timer timer;
     private Game game;
@@ -35,6 +32,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
         this.setBackground(Color.BLACK);
         this.setFocusable(true);
         this.addKeyListener(this);
+        add(statusBar, BorderLayout.SOUTH);
         startGame();
     }
 
@@ -43,6 +41,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
         timer = new Timer(100, this);
         timer.start();
         running = true;
+        updateStatus();
     }
 
     @Override
@@ -119,6 +118,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
                 }
                 break;
         }
+        updateStatus();
     }
 
     @Override
@@ -127,5 +127,33 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 
     @Override
     public void keyTyped(KeyEvent e) {
+    }
+
+    public void updateStatus() {
+        if (game == null) return;
+        SwingUtilities.invokeLater(() -> {
+            try {
+                Snake s = game.getSnake();
+                String snakeType = s == null ? "unknown" : s.getClass().getSimpleName();
+                String health = s == null ? "unknown" : s.getState().getClass().getSimpleName();
+
+                String difficulty;
+                try {
+                    Object spawn = game.getBasket().getFoodAppearStrategies();
+                    difficulty = spawn == null ? "unknown" : spawn.getClass().getSimpleName();
+                } catch (Throwable t) {
+                    difficulty = "unknown";
+                }
+
+                statusBar.setSnakeType(snakeType);
+                statusBar.setDifficulty(difficulty);
+                statusBar.setHealth(health);
+            } catch (Exception e) {
+                // keep UI stable on unexpected errors
+                statusBar.setSnakeType("-");
+                statusBar.setDifficulty("-");
+                statusBar.setHealth("-");
+            }
+        });
     }
 }

@@ -1,5 +1,4 @@
-// java
-package org.snakeinc.snake.model;
+ package org.snakeinc.snake.model;
 
 import java.util.ArrayList;
 
@@ -17,10 +16,16 @@ public abstract sealed class Snake permits Anaconda, Python, BoaConstrictor {
     protected final Grid grid;
     protected final Score score;
     @Setter
-    protected HealthsStates state;
+    @Getter
+    public HealthsStates state;
 
     @Getter
     protected Cell head;
+
+    protected Direction pendingDirection = null;
+
+    // remember last applied direction so we can detect a player "change" event
+    protected Direction lastDirection = null;
 
     public Snake(FruitEatenListener listener, Grid grid, Score score) {
         this.body = new ArrayList<>();
@@ -29,13 +34,11 @@ public abstract sealed class Snake permits Anaconda, Python, BoaConstrictor {
         this.score = score;
         this.state = new GoodHealth();
 
-        // first segment -> set as head (tete)
         Cell first = grid.getTile(GameParams.SNAKE_DEFAULT_X, GameParams.SNAKE_DEFAULT_Y);
         first.addSnake(this);
         body.add(first);
         this.head = first;
 
-        // remaining initial segments
         Cell second = grid.getTile(GameParams.SNAKE_DEFAULT_X, GameParams.SNAKE_DEFAULT_Y - 1);
         second.addSnake(this);
         body.add(second);
@@ -49,6 +52,16 @@ public abstract sealed class Snake permits Anaconda, Python, BoaConstrictor {
         return body.size();
     }
 
+    public void requestDirectionChange(Direction dir) {
+        this.pendingDirection = dir;
+    }
+
+    protected Direction consumePendingDirection() {
+        Direction d = this.pendingDirection;
+        this.pendingDirection = null;
+        return d;
+    }
+
     public abstract void eat(Fruit fruit, Cell cell) throws MalnutritionExeption;
 
     public enum Direction {
@@ -56,6 +69,12 @@ public abstract sealed class Snake permits Anaconda, Python, BoaConstrictor {
     }
 
     public void move(Direction direction) throws OutOfPlayException, SelfCollisionException, MalnutritionExeption {
+        // Apply pending direction only when the player actually changes direction.
+        // (i.e. incoming `direction` differs from `lastDirection` and we have a pending.)
+        if (pendingDirection != null && lastDirection != null && direction != lastDirection) {
+            direction = consumePendingDirection();
+        }
+
         int x = getHead().getX();
         int y = getHead().getY();
         switch (direction) {
@@ -81,21 +100,23 @@ public abstract sealed class Snake permits Anaconda, Python, BoaConstrictor {
             throw new SelfCollisionException();
         }
 
-        // Add the new head cell to the snake immediately and update `tete`
         newHead.addSnake(this);
         body.addFirst(newHead);
         this.head = newHead;
 
-        // Eat apple :
         if (newHead.containsAnFruit()) {
             this.eat(newHead.getFruit(), newHead);
             score.add_food_items_eaten();
+            // record last applied direction so future moves can detect changes
+            this.lastDirection = direction;
             return;
         }
 
-        // The snake did not eat :
         body.getLast().removeSnake();
         body.removeLast();
+
+        // record last applied direction for change detection
+        this.lastDirection = direction;
     }
 
 }
