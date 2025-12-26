@@ -69,8 +69,6 @@ public abstract sealed class Snake permits Anaconda, Python, BoaConstrictor {
     }
 
     public void move(Direction direction) throws OutOfPlayException, SelfCollisionException, MalnutritionExeption {
-        // Apply pending direction only when the player actually changes direction.
-        // (i.e. incoming `direction` differs from `lastDirection` and we have a pending.)
         if (pendingDirection != null && lastDirection != null && direction != lastDirection) {
             direction = consumePendingDirection();
         }
@@ -107,7 +105,6 @@ public abstract sealed class Snake permits Anaconda, Python, BoaConstrictor {
         if (newHead.containsAnFruit()) {
             this.eat(newHead.getFruit(), newHead);
             score.add_food_items_eaten();
-            // record last applied direction so future moves can detect changes
             this.lastDirection = direction;
             return;
         }
@@ -115,7 +112,6 @@ public abstract sealed class Snake permits Anaconda, Python, BoaConstrictor {
         body.getLast().removeSnake();
         body.removeLast();
 
-        // record last applied direction for change detection
         this.lastDirection = direction;
     }
 
