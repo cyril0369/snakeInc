@@ -18,7 +18,6 @@ public class Game {
     public Game() {
         grid = new Grid();
         basket = new Basket(grid);
-        basket.refillIfNeeded(1);
         score = new Score();
         var random = new Random();
         // int randint = 1;
@@ -34,6 +33,7 @@ public class Game {
             }
             default: snake = new BoaConstrictor((apple, cell) -> basket.removeFruitInCell(apple,cell), grid, score);
         }
+        basket.refillIfNeeded(1);
     }
 
     public void iterate(Snake.Direction direction) throws OutOfPlayException, SelfCollisionException, MalnutritionExeption {

@@ -1,7 +1,9 @@
+// java
 package org.snakeinc.snake.model;
 
 import java.util.ArrayList;
 
+import lombok.Getter;
 import lombok.Setter;
 import org.snakeinc.snake.GameParams;
 import org.snakeinc.snake.exception.MalnutritionExeption;
@@ -17,29 +19,34 @@ public abstract sealed class Snake permits Anaconda, Python, BoaConstrictor {
     @Setter
     protected HealthsStates state;
 
+    @Getter
+    protected Cell head;
+
     public Snake(FruitEatenListener listener, Grid grid, Score score) {
         this.body = new ArrayList<>();
         this.onFruitEatenListener = listener;
         this.grid = grid;
         this.score = score;
         this.state = new GoodHealth();
-        Cell head = grid.getTile(GameParams.SNAKE_DEFAULT_X, GameParams.SNAKE_DEFAULT_Y);
-        head.addSnake(this);
-        body.add(head);
-        head = grid.getTile(GameParams.SNAKE_DEFAULT_X, GameParams.SNAKE_DEFAULT_Y - 1);
-        head.addSnake(this);
-        body.add(head);
-        head = grid.getTile(GameParams.SNAKE_DEFAULT_X, GameParams.SNAKE_DEFAULT_Y - 2);
-        head.addSnake(this);
-        body.add(head);
+
+        // first segment -> set as head (tete)
+        Cell first = grid.getTile(GameParams.SNAKE_DEFAULT_X, GameParams.SNAKE_DEFAULT_Y);
+        first.addSnake(this);
+        body.add(first);
+        this.head = first;
+
+        // remaining initial segments
+        Cell second = grid.getTile(GameParams.SNAKE_DEFAULT_X, GameParams.SNAKE_DEFAULT_Y - 1);
+        second.addSnake(this);
+        body.add(second);
+
+        Cell third = grid.getTile(GameParams.SNAKE_DEFAULT_X, GameParams.SNAKE_DEFAULT_Y - 2);
+        third.addSnake(this);
+        body.add(third);
     }
 
     public int getSize() {
         return body.size();
-    }
-
-    public Cell getHead() {
-        return body.getFirst();
     }
 
     public abstract void eat(Fruit fruit, Cell cell) throws MalnutritionExeption;
@@ -74,6 +81,11 @@ public abstract sealed class Snake permits Anaconda, Python, BoaConstrictor {
             throw new SelfCollisionException();
         }
 
+        // Add the new head cell to the snake immediately and update `tete`
+        newHead.addSnake(this);
+        body.addFirst(newHead);
+        this.head = newHead;
+
         // Eat apple :
         if (newHead.containsAnFruit()) {
             this.eat(newHead.getFruit(), newHead);
@@ -82,12 +94,8 @@ public abstract sealed class Snake permits Anaconda, Python, BoaConstrictor {
         }
 
         // The snake did not eat :
-        newHead.addSnake(this);
-        body.addFirst(newHead);
-
         body.getLast().removeSnake();
         body.removeLast();
-
     }
 
 }

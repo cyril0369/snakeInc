@@ -2,31 +2,35 @@ package org.snakeinc.snake.model;
 
 import org.snakeinc.snake.GameParams;
 
-import java.util.List;
-import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class DifficultFoodAppearStrategies implements FoodAppearStrategies{
 
-    public void addApple(Cell cell, Grid grid, List<Fruit> fruits) {
-        if (cell == null) {
-            var random = new Random();
-            int randX = random.nextInt(0, GameParams.TILES_X);
-            int randY = random.nextInt(0, GameParams.TILES_Y);
-            while (grid.getTile(randX,randY).snake != null) {
-                randX = random.nextInt(0, GameParams.TILES_X);
-                randY = random.nextInt(0, GameParams.TILES_Y);
+    public Cell chooseCell(Grid grid, Snake snake) {
+        if (grid == null) return null;
+
+        int width = GameParams.TILES_X;
+        int height = GameParams.TILES_Y;
+        Cell chosen = null;
+        int count = 0;
+
+        for (int x = 0; x < width; x++) {
+            for (int y = 0; y < height; y++) {
+                boolean nearWall = (x == 0 || y == 0 || x == width - 1 || y == height - 1)
+                        || (x == 1 || y == 1 || x == width - 2 || y == height - 2);
+                if (!nearWall) continue;
+
+                Cell c = grid.getTile(x, y);
+                if (c == null) continue;
+                if (c.containsASnake() || c.containsAnFruit()) continue;
+
+                count++;
+                if (ThreadLocalRandom.current().nextInt(count) == 0) {
+                    chosen = c;
+                }
             }
-            cell = grid.getTile(randX,randY);
         }
-        var random = new Random();
-        int randI = random.nextInt(0, 3);
-        if (randI >= 1) {
-            Apple apple = AppleFactory.createAppleInCell(cell);
-            fruits.add(apple);
-        }
-        else {
-            Brocoli brocoli = BrocoliFactory.createBrocoliInCell(cell);
-            fruits.add(brocoli);
-        }
+
+        return chosen;
     }
 }

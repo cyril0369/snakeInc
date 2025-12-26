@@ -1,7 +1,8 @@
 package org.snakeinc.snake.model;
 
 import java.util.List;
+import java.util.Random;
 
 public interface FoodAppearStrategies {
-    void addApple(Cell cell,Grid grid, List<Fruit> fruits);
+    Cell chooseCell(Grid grid, Snake snake);
 }

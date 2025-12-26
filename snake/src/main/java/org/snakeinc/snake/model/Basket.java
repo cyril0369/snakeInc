@@ -35,7 +35,20 @@ public class Basket {
     }
 
     public void addApple(Cell cell) {
-        foodAppearStrategies.addApple(cell, grid, fruits);
+        if (cell == null) {
+            Snake snake = grid.getSnake();
+            cell = foodAppearStrategies.chooseCell(grid, snake);
+        }
+        var random = new Random();
+        int randI = random.nextInt(0, 3);
+        if (randI >= 1) {
+            Apple apple = AppleFactory.createAppleInCell(cell);
+            fruits.add(apple);
+        }
+        else {
+            Brocoli brocoli = BrocoliFactory.createBrocoliInCell(cell);
+            fruits.add(brocoli);
+        }
     }
 
     public void removeFruitInCell(Fruit fruit, Cell cell) {

@@ -21,6 +21,15 @@ public class Grid {
         return tiles.get(new CellKey(x, y));
     }
 
+    public Snake getSnake() {
+        for (Cell cell : tiles.values()) {
+            if (cell.containsASnake()) {
+                return cell.getSnake();
+            }
+        }
+        return null;
+    }
+
 
     private record CellKey(int x, int y) {
 
