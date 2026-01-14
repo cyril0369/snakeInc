@@ -5,6 +5,7 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Min;
 import org.snakeinc.snake.dto.PlayerResponse;
 import org.snakeinc.snake.dto.ScoreResponse;
+import org.snakeinc.snake.dto.PlayerStatsResponse;
 import org.snakeinc.snake.service.ScoreService;
 import org.springframework.web.bind.annotation.*;
 
@@ -37,5 +38,9 @@ public class ScoresController {
         List<ScoreResponse> scores = scoreService.getScore();
         return scores;
     }
-}
 
+    @GetMapping("/stats")
+    public PlayerStatsResponse getStats(@RequestParam("playerId") Long playerId) {
+        return scoreService.getStats(playerId);
+    }
+}

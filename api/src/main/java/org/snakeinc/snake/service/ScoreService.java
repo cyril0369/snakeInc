@@ -3,6 +3,8 @@ package org.snakeinc.snake.service;
 import jakarta.validation.Valid;
 import org.snakeinc.snake.controller.ScoresController;
 import org.snakeinc.snake.dto.ScoreResponse;
+import org.snakeinc.snake.dto.PlayerStatsResponse;
+import org.snakeinc.snake.dto.SnakeStat;
 import org.snakeinc.snake.exceptions.PlayerNotFoundException;
 import org.snakeinc.snake.model.Player;
 import org.snakeinc.snake.model.Score;
@@ -14,6 +16,9 @@ import org.springframework.http.HttpStatus;
 import java.util.Optional;
 import java.util.List;
 import java.util.ArrayList;
+import java.util.IntSummaryStatistics;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 import java.util.Optional;
 
@@ -64,5 +69,33 @@ public class ScoreService {
             responses.add(new ScoreResponse(s.getId(), s.getSnake(), s.getScore(), s.getPlayedAt(), s.getPlayer().getId()));
         }
         return responses;
+    }
+
+    public PlayerStatsResponse getStats(Long playerId) {
+        if (playerId == null || !playerRepository.existsById(playerId)) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "player not found");
+        }
+
+        List<Score> scores = scoreRepository.findByPlayerId(playerId);
+
+        Map<String, IntSummaryStatistics> grouped = scores.stream()
+                .collect(Collectors.groupingBy(
+                        Score::getSnake,
+                        Collectors.summarizingInt(Score::getScore)
+                ));
+
+        List<SnakeStat> stats = grouped.entrySet().stream()
+                .map(e -> {
+                    IntSummaryStatistics s = e.getValue();
+                    return new SnakeStat(
+                            e.getKey(),
+                            (int) s.getMin(),
+                            (int) s.getMax(),
+                            s.getAverage()
+                    );
+                })
+                .collect(Collectors.toList());
+
+        return new PlayerStatsResponse(playerId, stats);
     }
 }
