@@ -11,6 +11,9 @@ import org.snakeinc.snake.repository.ScoreRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.http.HttpStatus;
+import java.util.Optional;
+import java.util.List;
+import java.util.ArrayList;
 
 import java.util.Optional;
 
@@ -52,5 +55,14 @@ public class ScoreService {
         Score saved = scoreRepository.save(s);
 
         return new ScoreResponse(saved.getId(), saved.getSnake(), saved.getScore(), saved.getPlayedAt(), saved.getPlayer().getId());
+    }
+
+    public List<ScoreResponse> getScore() {
+        Iterable<Score> scores = scoreRepository.findAll();
+        List<ScoreResponse> responses = new ArrayList<>();
+        for (Score s : scores) {
+            responses.add(new ScoreResponse(s.getId(), s.getSnake(), s.getScore(), s.getPlayedAt(), s.getPlayer().getId()));
+        }
+        return responses;
     }
 }
