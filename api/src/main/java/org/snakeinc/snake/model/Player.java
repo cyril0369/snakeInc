@@ -1,6 +1,7 @@
 package org.snakeinc.snake.model;
 
 import jakarta.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name = "players")
@@ -18,6 +19,9 @@ public class Player {
     private String category;
 
     private String createdAt;
+
+    @OneToMany(mappedBy = "player", cascade = CascadeType.ALL)
+    private List<Score> scores;
 
     public Player() {}
 
@@ -68,5 +72,12 @@ public class Player {
     public void setCreatedAt(String createdAt) {
         this.createdAt = createdAt;
     }
-}
 
+    public List<Score> getScores() {
+        return scores;
+    }
+
+    public void setScores(List<Score> scores) {
+        this.scores = scores;
+    }
+}
